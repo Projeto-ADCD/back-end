@@ -39,13 +39,21 @@ public class ReceitaController {
 		}
 	}
 	
-	// @GetMapping("receitas/{}")
-	public ResponseEntity<List<Receita>> filtrarReceitasPorIngrediente() {
+	@GetMapping("/pesquisa/{contem_ingredientes}")
+	public ResponseEntity<List<Receita>> filtrarReceitasPorIngrediente(@PathVariable String[] contem_ingredientes) {
 		try {
-			return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitasPorIngredientes(), HttpStatus.OK);
+			return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitasPorIngredientes(contem_ingredientes), HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
-
+	 
+	@GetMapping("/pesquisa/{nao_contem_ingredientes}")
+	public ResponseEntity<List<Receita>> filtrarReceitasSemIngrediente(@PathVariable String[] nao_contem_ingredientes) {
+		try {
+			return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitasSemIngrediente(nao_contem_ingredientes), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
 }

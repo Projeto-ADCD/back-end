@@ -19,7 +19,12 @@ public class ReceitaService {
 		return null;
 	}
 	
-	public List<Receita> filtrarReceitasPorIngredientes() {
+	public List<Receita> filtrarReceitasPorIngredientes(String[] contem_ingredientes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Receita> filtrarReceitasSemIngrediente(String[] nao_contem_ingredientes) {
 		// TODO Auto-generated method stub
 		return null;
 	}
