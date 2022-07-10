@@ -18,25 +18,21 @@ public class ReceitaController {
 	@Autowired
 	private ReceitaService receitaService;
 	
+	@GetMapping("/")
+	public ResponseEntity<String> helloworld() {
+		return new ResponseEntity<String>("hello world", HttpStatus.OK);
+	}
 	
 	//falta ver direito as anotaçoes
 	
-	@GetMapping("receitas")
+	@GetMapping("/receitas")
 	public ResponseEntity<List<Receita>> getReceitas() {
-		try {
-			return new ResponseEntity<List<Receita>>(receitaService.getReceitas(), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		}
+		return new ResponseEntity<List<Receita>>(receitaService.getReceitas(), HttpStatus.OK);
 	}
 	
-	@GetMapping("receitas/{id}")
-	public ResponseEntity<Receita> getReceita(@PathVariable int id) {
-		try {
-			return new ResponseEntity<Receita>(receitaService.getReceita(), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.CONFLICT);
-		}
+	@GetMapping("/receitas/{id}")
+	public ResponseEntity<Receita> getReceitaById(@PathVariable Integer id) {
+		return new ResponseEntity<Receita>(receitaService.getReceitaById(id), HttpStatus.OK);
 	}
 	
 	@GetMapping("/pesquisa/{contem_ingredientes}")

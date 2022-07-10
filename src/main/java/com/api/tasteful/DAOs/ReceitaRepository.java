@@ -5,15 +5,19 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.api.tasteful.entities.Receita;
 
-public interface ReceitaRepository<T, ID extends Serializable> extends JpaRepository<Receita, Long> {
-
-	// @Query("select ")
-	List<Receita> findAll();
+@Repository
+public interface ReceitaRepository<T, ID extends Serializable> extends JpaRepository<Receita, Integer> {
 	
-	Optional<Receita> getReceitaById(Long id);
+	@Query("select r from Receita as r")
+	List<Receita> prkt();
+	
+	@Query("select r from Receita as r where id=1")
+	Optional<Receita> getReceitaById(Integer id);
 	
 	
 }
