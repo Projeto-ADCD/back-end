@@ -18,18 +18,20 @@ public class Receita {
 	private String recipe_json;
 	// ingredientes, modo de preparo, imagem, nome do usuario q postou
 	
-	
 	public Integer getId() {
 		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	public String getRecipe_json() {
 		return recipe_json;
 	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 	public void setRecipe_json(String recipe_json) {
 		this.recipe_json = recipe_json;
 	}
+	
+	
+	
+
 }

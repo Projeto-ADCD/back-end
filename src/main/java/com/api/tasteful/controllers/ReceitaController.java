@@ -2,6 +2,7 @@ package com.api.tasteful.controllers;
 
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,20 +37,16 @@ public class ReceitaController {
 	}
 	
 	@GetMapping("/pesquisa/{contem_ingredientes}")
-	public ResponseEntity<List<Receita>> filtrarReceitasPorIngrediente(@PathVariable String[] contem_ingredientes) {
-		try {
-			return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitasPorIngredientes(contem_ingredientes), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<List<String>> filtrarReceitasPorIngrediente(@PathVariable String contem_ingredientes) {
+		return new ResponseEntity<List<String>>(receitaService.filtrarReceitasPorIngredientes(contem_ingredientes), HttpStatus.OK);
 	}
 	 
-	@GetMapping("/pesquisa/{nao_contem_ingredientes}")
-	public ResponseEntity<List<Receita>> filtrarReceitasSemIngrediente(@PathVariable String[] nao_contem_ingredientes) {
-		try {
-			return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitasSemIngrediente(nao_contem_ingredientes), HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-	}
+//	@GetMapping("/pesquisa/{nao_contem_ingredientes}")
+//	public ResponseEntity<List<Receita>> filtrarReceitasSemIngrediente(@PathVariable String[] nao_contem_ingredientes) {
+//		try {
+//			return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitasSemIngrediente(nao_contem_ingredientes), HttpStatus.OK);
+//		} catch (Exception e) {
+//			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//		}
+//	}
 }
