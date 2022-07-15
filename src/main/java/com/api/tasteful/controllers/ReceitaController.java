@@ -1,6 +1,7 @@
 package com.api.tasteful.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,15 @@ public class ReceitaController {
 	
 	@GetMapping("/pesquisa/{contem_ingredientes}")
 	public ResponseEntity<List<String>> filtrarReceitasPorIngrediente(@PathVariable String contem_ingredientes) {
-		return new ResponseEntity<List<String>>(receitaService.filtrarReceitasPorIngredientes(contem_ingredientes), HttpStatus.OK);
+		List<String> lista = receitaService.filtrarReceitasPorIngredientes(contem_ingredientes);
+		System.out.println(lista.toString());
+		return new ResponseEntity<List<String>>(lista, HttpStatus.OK);
 	}
+//	@GetMapping("/pesquisa/{contem_ingredientes}")
+//	public ResponseEntity<List<JSONObject>> filtrarReceitasPorIngrediente(@PathVariable String contem_ingredientes) {
+//		return new ResponseEntity<List<JSONObject>>(receitaService.filtrarReceitasPorIngredientes(contem_ingredientes), HttpStatus.OK);
+//	}
+	
 	 
 //	@GetMapping("/pesquisa/{nao_contem_ingredientes}")
 //	public ResponseEntity<List<Receita>> filtrarReceitasSemIngrediente(@PathVariable String[] nao_contem_ingredientes) {
