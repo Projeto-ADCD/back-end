@@ -25,12 +25,13 @@ public class ReceitaService {
 	
 	public List<String> filtrarReceitasPorIngredientes(String[] contem_ingredientes) {
 		String ingredientes = "";
-		for (int i=0; i < contem_ingredientes.length - 1; i++) {
+		int tamanho = contem_ingredientes.length;
+		for (int i=0; i < tamanho - 1; i++) {
 			ingredientes += contem_ingredientes[i] + " & ";
 		}
 		
-		ingredientes += contem_ingredientes[-1];
-			
+		ingredientes += contem_ingredientes[tamanho - 1];
+		System.out.println("oi " + ingredientes);
 		return receitaRepository.filtrarReceitasPorIngredientes(ingredientes);
 	}
 	
