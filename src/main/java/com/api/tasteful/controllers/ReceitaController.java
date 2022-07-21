@@ -37,12 +37,13 @@ public class ReceitaController {
 	
 
 	@GetMapping("/pesquisa/filtro")
-	public ResponseEntity<List<String>> filtrarReceitasPorIngrediente(@RequestParam String[] ingredientes) {
-		return new ResponseEntity<List<String>>(receitaService.filtrarReceitasPorIngredientes(ingredientes), HttpStatus.OK);
+	public ResponseEntity<List<Receita>> filtrarReceitas(@RequestParam(value = "ingredientes", required = false) String[] ingredientes, 
+													@RequestParam(value = "nao_ingredientes", required = false) String[] nao_ingredientes) {
+		return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitas(ingredientes, nao_ingredientes), HttpStatus.OK);
 	}
 	 
-	@GetMapping("/pesquisa/{nao_contem_ingredientes}")
-	public ResponseEntity<List<String>> filtrarReceitasSemIngrediente(@PathVariable String[] nao_contem_ingredientes) {
-		return new ResponseEntity<List<String>>(receitaService.filtrarReceitasSemIngredientes(nao_contem_ingredientes), HttpStatus.OK);
-	}
+//	@GetMapping("/pesquisa/{nao_contem_ingredientes}")
+//	public ResponseEntity<List<String>> filtrarReceitasSemIngrediente(@PathVariable String[] nao_contem_ingredientes) {
+//		return new ResponseEntity<List<String>>(receitaService.filtrarReceitasSemIngredientes(nao_contem_ingredientes), HttpStatus.OK);
+//	}
 }

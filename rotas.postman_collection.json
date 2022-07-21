@@ -1,0 +1,29 @@
+{
+	"info": {
+		"_postman_id": "bd05cb55-1c78-447f-8bc8-6862d575fdf6",
+		"name": "Projeto1-ad/cd",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8892207"
+	},
+	"item": [
+		{
+			"name": "Filtro de ingredientes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/pesquisa/limão",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pesquisa",
+						"limão"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
