@@ -23,21 +23,50 @@ public class ReceitaService {
 		return receitaRepository.getReceitaById(id).get();
 	}
 	
-	public List<String> filtrarReceitasPorIngredientes(String[] contem_ingredientes) {
-		String ingredientes = "";
-		for (int i=0; i < contem_ingredientes.length - 1; i++) {
-			ingredientes += contem_ingredientes[i] + " & ";
+	public List<Receita> filtrarReceitas(String[] contem_ingredientes, String[] nao_contem_ingredientes) {
+		String ingredientes = filtrarReceitasPorIngredientes(contem_ingredientes);
+		String nao_ingredientes = filtrarReceitasSemIngredientes(nao_contem_ingredientes);
+		
+		String filtro = ingredientes;
+		if (filtro == "")
+			filtro = nao_ingredientes;
+		else if (nao_ingredientes != ""){
+			filtro += " & " + nao_ingredientes;
 		}
 		
-		ingredientes += contem_ingredientes[-1];
+		System.out.println(filtro);
+		return receitaRepository.filtrarReceitas(filtro);
+	}
+	
+	public String filtrarReceitasPorIngredientes(String[] contem_ingredientes) {
+		String ingredientes = "";
+		
+		if (contem_ingredientes != null && contem_ingredientes.length > 0) {
+			int tamanho = contem_ingredientes.length;
+			for (int i=0; i < tamanho - 1; i++) {
+				ingredientes += contem_ingredientes[i].replaceAll(" ", " <-> ") + " & ";
+			}
 			
-		return receitaRepository.filtrarReceitasPorIngredientes(ingredientes);
+			ingredientes += contem_ingredientes[tamanho - 1].replaceAll(" ", " <-> ");
+		}
+		
+		return ingredientes;
 	}
 	
 
-	public List<String> filtrarReceitasSemIngredientes(String[] nao_contem_ingredientes) {
-		//return receitaRepository.filtrarReceitasSemIngredientes(nao_contem_ingredientes);
-		return null;
+	public String filtrarReceitasSemIngredientes(String[] nao_contem_ingredientes) {
+		String ingredientes = "";
+		
+		if (nao_contem_ingredientes != null && nao_contem_ingredientes.length > 0) {
+			int tamanho = nao_contem_ingredientes.length;
+			for (int i=0; i < tamanho - 1; i++) {
+				ingredientes += "!(" + nao_contem_ingredientes[i].replaceAll(" ", " <-> ") + ") & ";
+			}
+			
+			ingredientes += "!(" + nao_contem_ingredientes[tamanho - 1].replaceAll(" ", " <-> ") + ")";
+		}
+		
+		return ingredientes;
 	}
 
 }
