@@ -34,6 +34,7 @@ public class ReceitaService {
 			filtro += " & " + nao_ingredientes;
 		}
 		
+		System.out.println(filtro);
 		return receitaRepository.filtrarReceitas(filtro);
 	}
 	
@@ -59,10 +60,10 @@ public class ReceitaService {
 		if (nao_contem_ingredientes != null && nao_contem_ingredientes.length > 0) {
 			int tamanho = nao_contem_ingredientes.length;
 			for (int i=0; i < tamanho - 1; i++) {
-				ingredientes += "!" + nao_contem_ingredientes[i].replaceAll(" ", " <-> ") + " & ";
+				ingredientes += "!(" + nao_contem_ingredientes[i].replaceAll(" ", " <-> ") + ") & ";
 			}
 			
-			ingredientes += "!" + nao_contem_ingredientes[tamanho - 1].replaceAll(" ", " <-> ");
+			ingredientes += "!(" + nao_contem_ingredientes[tamanho - 1].replaceAll(" ", " <-> ") + ")";
 		}
 		
 		return ingredientes;

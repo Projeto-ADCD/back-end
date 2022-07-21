@@ -17,7 +17,7 @@ public interface ReceitaRepository<T, ID extends Serializable> extends JpaReposi
 	@Query("select r from Receita as r where id=?1")
 	Optional<Receita> getReceitaById(Integer id);
 	
-	@Query("SELECT r FROM Receita AS r WHERE fts(:ingredientes) = true")
+	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true")
 	List<Receita> filtrarReceitas(@Param("ingredientes") String ingredientes);
 
 }
