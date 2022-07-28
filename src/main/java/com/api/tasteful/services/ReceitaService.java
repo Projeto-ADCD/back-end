@@ -70,7 +70,7 @@ public class ReceitaService {
 	}
 
 	public List<Receita> getReceitaByNome(String nomeReceita) {
-		return receitaRepository.getReceitaByNome(nomeReceita).get();
+		return receitaRepository.getReceitaByNome(nomeReceita.replaceAll(" ", " <-> ")).get();
 	}
 
 }
