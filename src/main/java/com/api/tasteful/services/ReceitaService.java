@@ -38,7 +38,7 @@ public class ReceitaService {
 		return receitaRepository.filtrarReceitas(filtro);
 	}
 	
-	public String filtrarReceitasPorIngredientes(String[] contem_ingredientes) {
+	private String filtrarReceitasPorIngredientes(String[] contem_ingredientes) {
 		String ingredientes = "";
 		
 		if (contem_ingredientes != null && contem_ingredientes.length > 0) {
@@ -54,7 +54,7 @@ public class ReceitaService {
 	}
 	
 
-	public String filtrarReceitasSemIngredientes(String[] nao_contem_ingredientes) {
+	private String filtrarReceitasSemIngredientes(String[] nao_contem_ingredientes) {
 		String ingredientes = "";
 		
 		if (nao_contem_ingredientes != null && nao_contem_ingredientes.length > 0) {
@@ -67,6 +67,10 @@ public class ReceitaService {
 		}
 		
 		return ingredientes;
+	}
+
+	public List<Receita> getReceitaByNome(String nomeReceita) {
+		return receitaRepository.getReceitaByNome(nomeReceita.replaceAll(" ", " <-> ")).get();
 	}
 
 }

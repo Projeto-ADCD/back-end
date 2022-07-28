@@ -61,6 +61,13 @@
 			<artifactId>json</artifactId>
 			<version>20180130</version>
 		</dependency>
+		
+		<!-- Dependência pro CORS-->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
