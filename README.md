@@ -7,4 +7,6 @@ O link para nossa documentação swagger está disponível em:
 
 ```
 inserir link aqui quando disponível
+
+http://localhost:8080/swagger-ui/index.html
 ```
