@@ -14,11 +14,20 @@ public class ReceitaService {
 	@Autowired
 	private ReceitaRepository<Receita, Integer> receitaRepository;
 
-
+	
+	/**
+	 * Simplesmente retorna uma lista com todas as receitas existentes no banco de dados
+	 * @return Lista com todas as receitas
+	 */
 	public List<Receita> getReceitas() {
 		return receitaRepository.findAll();
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public Receita getReceitaById(Integer id) {
 		return receitaRepository.getReceitaById(id).get();
 	}
