@@ -40,16 +40,17 @@ public class ReceitaController {
 		return new ResponseEntity<List<Receita>>(receitaService.getReceitas(), HttpStatus.OK);
 	}
 	
-	@ApiParam(
-		    name =  "id",
-		    type = "Integer",
-    		value= "ID único de uma receita no banco de dados",
-		    required = true)
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Retorna a receita correspondente ao ID único")
 	})
 	@GetMapping("/receitas/{id}")
-	public ResponseEntity<Receita> getReceitaById(@PathVariable Integer id) {
+	public ResponseEntity<Receita> getReceitaById(
+			@ApiParam(
+				    name =  "id",
+				    type = "Integer",
+		    		value= "ID único de uma receita no banco de dados",
+				    required = true)
+			@PathVariable Integer id) {
 		return new ResponseEntity<Receita>(receitaService.getReceitaById(id), HttpStatus.OK);
 	}
 
