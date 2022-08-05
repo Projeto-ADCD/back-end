@@ -71,7 +71,11 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+		</dependency>
 		<!-- deploy back -->
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
