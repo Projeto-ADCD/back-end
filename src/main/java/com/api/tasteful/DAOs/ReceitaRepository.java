@@ -1,9 +1,10 @@
 package com.api.tasteful.DAOs;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,9 +19,8 @@ public interface ReceitaRepository<T, ID extends Serializable> extends JpaReposi
 	Optional<Receita> getReceitaById(Integer id);
 
 	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true")
-	List<Receita> filtrarReceitas(@Param("ingredientes") String ingredientes);
+	Page<Receita> filtrarReceitas(@Param("ingredientes") String ingredientes, Pageable pageable);
 
 	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true")
-	Optional<List<Receita>> getReceitaByNome(@Param("nomeReceita") String nomeReceita);
-
+	Page<Receita> getReceitaByNome(@Param("nomeReceita") String nomeReceita, Pageable pageable);
 }
