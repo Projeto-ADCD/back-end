@@ -67,7 +67,7 @@ public class ReceitaService {
 		}
 		
 		Pageable paging = PageRequest.of(page, size);
-		Page<Receita> pagedResult = receitaRepository.getReceitaByNome(filtro, paging);
+		Page<Receita> pagedResult = receitaRepository.filtrarReceitas(filtro, paging);
 		
 		if (pagedResult.hasContent())
 			return pagedResult.getContent();
