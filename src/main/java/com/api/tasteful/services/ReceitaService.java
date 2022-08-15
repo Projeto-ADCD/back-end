@@ -66,6 +66,9 @@ public class ReceitaService {
 			filtro += " & " + nao_ingredientes;
 		}
 		
+		System.out.println(nao_ingredientes);
+		System.out.println(filtro);
+		
 		Pageable paging = PageRequest.of(page, size);
 		Page<Receita> pagedResult = receitaRepository.filtrarReceitas(filtro, paging);
 		
@@ -113,11 +116,15 @@ public class ReceitaService {
 
 		if (nao_contem_ingredientes != null && nao_contem_ingredientes.length > 0) {
 			int tamanho = nao_contem_ingredientes.length;
+			String aux = "";
+			
 			for (int i = 0; i < tamanho - 1; i++) {
-				ingredientes += "!(" + nao_contem_ingredientes[i].replaceAll(" ", " <-> ") + ") & ";
+				aux = "!(" + nao_contem_ingredientes[i].replaceAll(" ", " <-> ");
+				ingredientes += aux + "s) & " + aux + ") & ";
 			}
-
-			ingredientes += "!(" + nao_contem_ingredientes[tamanho - 1].replaceAll(" ", " <-> ") + ")";
+			
+			aux = "!(" + nao_contem_ingredientes[tamanho - 1].replaceAll(" ", " <-> ");
+			ingredientes += aux + "s) & " + aux + ")";
 		}
 
 		return ingredientes;
