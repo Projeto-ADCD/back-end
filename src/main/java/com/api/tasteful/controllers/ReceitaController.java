@@ -32,11 +32,11 @@ public class ReceitaController {
 	}
 
 	@ApiResponses(value = { 
-			@ApiResponse(responseCode = "200", description = "Retorna uma lista com todas as receitas do banco de dados")
+			@ApiResponse(responseCode = "200", description = "Retorna uma lista com um subconjunto de receitas de acordo com a página")
 	})
 	@GetMapping("/receitas")
-	public ResponseEntity<List<Receita>> getReceitas() {
-		return new ResponseEntity<List<Receita>>(receitaService.getReceitas(), HttpStatus.OK);
+	public ResponseEntity<List<Receita>> getReceitas(@RequestParam(defaultValue="0") Integer page, @RequestParam(defaultValue="10") Integer size) {
+		return new ResponseEntity<List<Receita>>(receitaService.getReceitas(page, size), HttpStatus.OK);
 	}
 	
 	@ApiResponses(value = { 
@@ -63,8 +63,10 @@ public class ReceitaController {
 				    type = "String",
 		    		value= "palavras chave que o usuário espera encontrar como título da receita",
 				    required = false)
-			@RequestParam(value = "nomeReceita", required = false) String nomeReceita) {
-		return new ResponseEntity<List<Receita>>(receitaService.getReceitaByNome(nomeReceita), HttpStatus.OK);
+			@RequestParam(value = "nomeReceita", required = false) String nomeReceita,
+			@RequestParam(defaultValue="0") Integer page, 
+			@RequestParam(defaultValue="10") Integer size) {
+		return new ResponseEntity<List<Receita>>(receitaService.getReceitaByNome(nomeReceita, page, size), HttpStatus.OK);
 	}
 
 	@ApiResponses(value = { 
@@ -83,8 +85,9 @@ public class ReceitaController {
 				    type = "String",
 		    		value= "palavras chave que o usuário quer que *não* estejam presentes na receita.",
 				    required = false)
-			@RequestParam(value = "nao_ingredientes", required = false) String[] nao_ingredientes) {
-		return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitas(ingredientes, nao_ingredientes),
-				HttpStatus.OK);
+			@RequestParam(value = "nao_ingredientes", required = false) String[] nao_ingredientes,
+			@RequestParam(defaultValue="0") Integer page, 
+			@RequestParam(defaultValue="10") Integer size) {
+		return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitas(ingredientes, nao_ingredientes, page, size), HttpStatus.OK);
 	}
 }
