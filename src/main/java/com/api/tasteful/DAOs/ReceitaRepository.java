@@ -23,4 +23,16 @@ public interface ReceitaRepository<T, ID extends Serializable> extends JpaReposi
 
 	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true")
 	Page<Receita> getReceitaByNome(@Param("nomeReceita") String nomeReceita, Pageable pageable);
+	
+	@Query("SELECT r FROM Receita AS r  WHERE tempo > 1 ORDER BY tempo ASC")
+	Page<Receita> sortReceitasByTempoASC(Pageable pageable);
+	
+	@Query("SELECT r FROM Receita AS r ORDER BY tempo DESC")
+	Page<Receita> sortReceitasByTempoDESC(Pageable pageable);
+	
+	@Query("SELECT r FROM Receita AS r WHERE porcoes > 0 ORDER BY porcoes ASC")
+	Page<Receita> sortReceitasByPorcaoASC(Pageable pageable);
+	
+	@Query("SELECT r FROM Receita AS r ORDER BY porcoes DESC")
+	Page<Receita> sortReceitasByPorcaoDESC(Pageable pageable);
 }

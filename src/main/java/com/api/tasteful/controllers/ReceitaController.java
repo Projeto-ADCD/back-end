@@ -52,6 +52,38 @@ public class ReceitaController {
 			@PathVariable Integer id) {
 		return new ResponseEntity<Receita>(receitaService.getReceitaById(id), HttpStatus.OK);
 	}
+	
+
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "Retorna as receitas paginadas ordenada pelo tempo em ordem crescente ou decrescente")
+	})
+	@GetMapping("/sort/tempo")
+	public ResponseEntity<List<Receita>> sortByTempo(@RequestParam(defaultValue="0") Integer page, 
+			@RequestParam(defaultValue="10") Integer size,
+			@ApiParam(
+				    name =  "ascending",
+				    type = "boolean",
+		    		value= "variavel booleana que dita se a ordenação será crescente ou não",
+				    required = true)
+			@RequestParam(value = "ascending") boolean ascending)  {
+		return new ResponseEntity<List<Receita>>(receitaService.sortReceitasByTempo(page, size, ascending), HttpStatus.OK);
+	}
+	
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "Retorna as receitas paginadas ordenada pela quantidade de porções em ordem crescente ou decrescente")
+	})
+	@GetMapping("/sort/porcao")
+	public ResponseEntity<List<Receita>> sortByPorcao(@RequestParam(defaultValue="0") Integer page, 
+			@RequestParam(defaultValue="10") Integer size,
+			@ApiParam(
+				    name =  "ascending",
+				    type = "boolean",
+		    		value= "variavel booleana que dita se a ordenação será crescente ou não",
+				    required = true)
+			@RequestParam(value = "ascending") boolean ascending)  {
+		return new ResponseEntity<List<Receita>>(receitaService.sortReceitasByPorcao(page, size, ascending), HttpStatus.OK);
+	}
+	
 
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Retorna uma lista de Receitas que contenham a palavra chave (ou algo similar) no título.")

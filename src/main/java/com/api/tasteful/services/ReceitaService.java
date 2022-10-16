@@ -32,6 +32,46 @@ public class ReceitaService {
 			return pagedResult.getContent();
 		return new ArrayList<Receita>();
 	}
+	
+	/**
+	 * 
+	 * @param page
+	 * @param size
+	 * @return
+	 */
+	public List<Receita> sortReceitasByTempo(int page, int size, boolean ascending) {
+		Pageable paging = PageRequest.of(page, size);
+		Page<Receita> pagedResult = null;
+		
+		if (ascending)
+			pagedResult = receitaRepository.sortReceitasByTempoASC(paging);
+		else 
+			pagedResult = receitaRepository.sortReceitasByTempoDESC(paging); 
+		
+		if (pagedResult.hasContent())
+			return pagedResult.getContent();
+		return new ArrayList<Receita>();
+	}
+	
+	/**
+	 * 
+	 * @param page
+	 * @param size
+	 * @return
+	 */
+	public List<Receita> sortReceitasByPorcao(int page, int size, boolean ascending) {
+		Pageable paging = PageRequest.of(page, size);
+		Page<Receita> pagedResult = null;
+		
+		if (ascending)
+			pagedResult = receitaRepository.sortReceitasByPorcaoASC(paging);
+		else 
+			pagedResult = receitaRepository.sortReceitasByPorcaoDESC(paging); 
+		
+		if (pagedResult.hasContent())
+			return pagedResult.getContent();
+		return new ArrayList<Receita>();
+	}
 
 	/**
 	 * Retorna a receita correspondente ao id do banco de dados
