@@ -97,10 +97,35 @@ public class ReceitaController {
 				    required = false)
 			@RequestParam(value = "nomeReceita", required = false) String nomeReceita,
 			@RequestParam(defaultValue="0") Integer page, 
-			@RequestParam(defaultValue="10") Integer size) {
-		return new ResponseEntity<List<Receita>>(receitaService.getReceitaByNome(nomeReceita, page, size), HttpStatus.OK);
+			@RequestParam(defaultValue="10") Integer size,
+			@RequestParam(defaultValue = "") String paramOrdem,
+			@RequestParam(defaultValue = "true") boolean ascending)
+	{ 
+		return new ResponseEntity<List<Receita>>(receitaService.getReceitaByNomeGenerico(nomeReceita, page, size, paramOrdem, ascending), HttpStatus.OK);
 	}
 
+//	@ApiResponses(value = { 
+//			@ApiResponse(responseCode = "200", description = "Retorna uma lista de receitas que **obrigatoriamente** contém a lista de *ingredientes* e **não contém** a lista de *nao_ingredientes*.")
+//	})
+//	@GetMapping("/pesquisa/filtro")
+//	public ResponseEntity<List<Receita>> filtrarReceitas(
+//			@ApiParam(
+//				    name =  "ingredientes",
+//				    type = "String",
+//		    		value= "palavras chave que o usuário espera encontrar na lista de ingredientes da receita (embora esteja sendo buscado tanto no título quanto no corpo da receita também).",
+//				    required = false)
+//			@RequestParam(value = "ingredientes", required = false) String[] ingredientes,
+//			@ApiParam(
+//				    name =  "nao_ingredientes",
+//				    type = "String",
+//		    		value= "palavras chave que o usuário quer que *não* estejam presentes na receita.",
+//				    required = false)
+//			@RequestParam(value = "nao_ingredientes", required = false) String[] nao_ingredientes,
+//			@RequestParam(defaultValue="0") Integer page, 
+//			@RequestParam(defaultValue="10") Integer size) {
+//		return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitas(ingredientes, nao_ingredientes, page, size), HttpStatus.OK);
+//	}
+	
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Retorna uma lista de receitas que **obrigatoriamente** contém a lista de *ingredientes* e **não contém** a lista de *nao_ingredientes*.")
 	})
@@ -117,9 +142,12 @@ public class ReceitaController {
 				    type = "String",
 		    		value= "palavras chave que o usuário quer que *não* estejam presentes na receita.",
 				    required = false)
-			@RequestParam(value = "nao_ingredientes", required = false) String[] nao_ingredientes,
+			@RequestParam(value = "nao_ingredientes", required = false) String[] nao_ingredientes,			
 			@RequestParam(defaultValue="0") Integer page, 
-			@RequestParam(defaultValue="10") Integer size) {
-		return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitas(ingredientes, nao_ingredientes, page, size), HttpStatus.OK);
+			@RequestParam(defaultValue="10") Integer size,
+			@RequestParam(defaultValue = "") String paramOrdem,
+			@RequestParam(defaultValue = "true") boolean ascending)
+	{ 
+		return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitasGenerico(ingredientes, nao_ingredientes, page, size, paramOrdem, ascending), HttpStatus.OK);
 	}
 }

@@ -20,9 +20,30 @@ public interface ReceitaRepository<T, ID extends Serializable> extends JpaReposi
 
 	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true")
 	Page<Receita> filtrarReceitas(@Param("ingredientes") String ingredientes, Pageable pageable);
-
+	
+	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true ORDER BY tempo ASC")
+	Page<Receita> filtrarReceitasSortedTempoASC(@Param("ingredientes") String ingredientes, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true ORDER BY tempo DESC")
+	Page<Receita> filtrarReceitasSortedTempoDESC(@Param("ingredientes") String ingredientes, Pageable pageable);
+	
+	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true ORDER BY porcoes ASC")
+	Page<Receita> filtrarReceitasSortedPorcaoASC(@Param("ingredientes") String ingredientes, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true ORDER BY porcoes DESC")
+	Page<Receita> filtrarReceitasSortedPorcaoDESC(@Param("ingredientes") String ingredientes, Pageable pageable);
+	
 	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true")
 	Page<Receita> getReceitaByNome(@Param("nomeReceita") String nomeReceita, Pageable pageable);
+	
+	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true ORDER BY tempo ASC")
+	Page<Receita> getReceitaByNomeTempoASC(@Param("nomeReceita") String nomeReceita, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true ORDER BY tempo DESC")
+	Page<Receita> getReceitaByNomeTempoDESC(@Param("nomeReceita") String nomeReceita, Pageable pageable);
+	
+	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true ORDER BY porcoes ASC")
+	Page<Receita> getReceitaByNomePorcaoASC(@Param("nomeReceita") String nomeReceita, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true ORDER BY porcoes DESC")
+	Page<Receita> getReceitaByNomePorcaoDESC(@Param("nomeReceita") String nomeReceita, Pageable pageable);
+	
 	
 	@Query("SELECT r FROM Receita AS r  WHERE tempo > 1 ORDER BY tempo ASC")
 	Page<Receita> sortReceitasByTempoASC(Pageable pageable);
