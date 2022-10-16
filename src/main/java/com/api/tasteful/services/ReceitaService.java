@@ -110,8 +110,7 @@ public class ReceitaService {
 		} else if (nao_ingredientes != "") {
 			filtro += " & " + nao_ingredientes;
 		}
-		
-		System.out.println(paramOrdem);
+
 		
 		if (paramOrdem == "") 
 			return filtrarReceitas(filtro, page, size);
@@ -231,18 +230,14 @@ public class ReceitaService {
 	public Page<Receita> getReceitaByNomeSorted(String nomeReceita, int page, int size, String paramOrdem, boolean ascending) {
 		Pageable paging = PageRequest.of(page, size);
 		Page<Receita> pagedResult = null;
-		
-		System.out.println(paramOrdem);
-		System.out.println(paramOrdem == "tempo");
-		
+				
 		if (paramOrdem.equals("tempo")) {
-			System.out.println("ola entrou");
 			if (ascending)
 				pagedResult = receitaRepository.getReceitaByNomeTempoASC(nomeReceita, paging); 
 			else 
 				pagedResult = receitaRepository.getReceitaByNomeTempoDESC(nomeReceita, paging);
 		} else {
-			System.out.println(paramOrdem + "?????????/");
+
 			if (ascending)
 				pagedResult = receitaRepository.getReceitaByNomePorcaoASC(nomeReceita, paging); 
 			else 
