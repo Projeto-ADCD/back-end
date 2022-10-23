@@ -17,16 +17,93 @@ public class ReceitaService {
 
 	@Autowired
 	private ReceitaRepository<Receita, Integer> receitaRepository;
-
+	
+	/**
+	 * Retorna a tag formatada pra ser aceita pelo psql
+	 * 
+	 * @param tag
+	 * @return string tag formatada
+	 */
+	private String fixTag(String tag) {
+		String fixed = tag.replaceAll(" ", " <-> ");	
+		
+		return fixed;
+	}
+	
 	/**
 	 * Retorna uma lista do tamanho 'size' de receitas
 	 * de acordo com a página 'page'
 	 * 
 	 * @return Lista com todas as receitas por página
 	 */
-	public List<Receita> getReceitas(int page, int size) {
+	public List<Receita> getReceitas(int page, int size, String tag) {
 		Pageable paging = PageRequest.of(page, size);
-		Page<Receita> pagedResult = receitaRepository.findAll(paging);
+		Page<Receita> pagedResult = null;
+		
+		if (tag.equals("")) 
+			pagedResult = receitaRepository.findAll(paging);
+		else
+			pagedResult = receitaRepository.findAll(fixTag(tag), paging);
+		
+		
+		if (pagedResult.hasContent())
+			return pagedResult.getContent();
+		return new ArrayList<Receita>();
+	}
+	
+	
+	/**
+	 * 
+	 * @param page
+	 * @param size
+	 * @return
+	 */
+	public List<Receita> sortReceitasByTempo(int page, int size, boolean ascending, String tag) {
+		Pageable paging = PageRequest.of(page, size);
+		Page<Receita> pagedResult = null;
+		
+		if (tag.equals("")) {
+			if (ascending)
+				pagedResult = receitaRepository.sortReceitasByTempoASC(paging);
+			else 
+				pagedResult = receitaRepository.sortReceitasByTempoDESC(paging); 
+		} else {
+			String fixTag = fixTag(tag);
+			if (ascending)
+				pagedResult = receitaRepository.sortReceitasByTempoASC(fixTag, paging);
+			else 
+				pagedResult = receitaRepository.sortReceitasByTempoDESC(fixTag, paging); 
+		}
+		
+		if (pagedResult.hasContent())
+			return pagedResult.getContent();
+		return new ArrayList<Receita>();
+	}
+	
+	/**
+	 * 
+	 * @param page
+	 * @param size
+	 * @return
+	 */
+	public List<Receita> sortReceitasByPorcao(int page, int size, boolean ascending, String tag) {
+		Pageable paging = PageRequest.of(page, size);
+		Page<Receita> pagedResult = null;
+		
+		if (tag.equals("")) {
+			if (ascending)
+				pagedResult = receitaRepository.sortReceitasByPorcaoASC(paging);
+			else 
+				pagedResult = receitaRepository.sortReceitasByPorcaoDESC(paging); 
+		} else {
+			String fixTag = fixTag(tag);
+			
+			if (ascending)
+				pagedResult = receitaRepository.sortReceitasByPorcaoASC(fixTag, paging);
+			else 
+				pagedResult = receitaRepository.sortReceitasByPorcaoDESC(fixTag, paging); 
+		}
+		
 		
 		if (pagedResult.hasContent())
 			return pagedResult.getContent();
@@ -42,7 +119,8 @@ public class ReceitaService {
 	public Receita getReceitaById(Integer id) {
 		return receitaRepository.getReceitaById(id).get();
 	}
-
+	
+	
 	/**
 	 * Deve retornar uma lista de receitas que contém os ingredientes da primeira
 	 * lista e absolutamente não pode conter nenhum ingrediente da segunda lista.
@@ -54,7 +132,11 @@ public class ReceitaService {
 	 * @return Uma lista de receitas de acordo com os ingredientes que devem ter
 	 *         (lista 1) e os ingredientes que não devem ter (lista 2)
 	 */
-	public List<Receita> filtrarReceitas(String[] contem_ingredientes, String[] nao_contem_ingredientes, int page, int size) {
+	public List<Receita> filtrarReceitasGenerico(String[] contem_ingredientes, 
+			String[] nao_contem_ingredientes, 
+			int page, int size, 
+			String paramOrdem, boolean ascending, String tag) {
+		
 		String ingredientes = filtrarReceitasPorIngredientes(contem_ingredientes);
 		String nao_ingredientes = filtrarReceitasSemIngredientes(nao_contem_ingredientes);
 
@@ -65,18 +147,67 @@ public class ReceitaService {
 		} else if (nao_ingredientes != "") {
 			filtro += " & " + nao_ingredientes;
 		}
+				
 		
-		System.out.println(nao_ingredientes);
-		System.out.println(filtro);
-		
+		if (paramOrdem == "") 
+			return filtrarReceitas(filtro, page, size, tag);
+		else 
+			return filtrarReceitasOrdenado(filtro, page, size, paramOrdem, ascending, tag);		
+	}
+	private List<Receita> filtrarReceitas(String filtro, int page, int size, String tag) {
 		Pageable paging = PageRequest.of(page, size);
-		Page<Receita> pagedResult = receitaRepository.filtrarReceitas(filtro, paging);
+		Page<Receita> pagedResult = null;
+		
+		if (tag.equals(""))
+			pagedResult = receitaRepository.filtrarReceitas(filtro, paging);
+		else
+			pagedResult = receitaRepository.filtrarReceitas(filtro, fixTag(tag), paging);
 		
 		if (pagedResult.hasContent())
 			return pagedResult.getContent();
 		return new ArrayList<Receita>();
 	}
-
+	private List<Receita> filtrarReceitasOrdenado(String filtro, 
+				int page, int size, 
+				String paramOrdem, boolean ascending, String tag) {
+		
+		Pageable paging = PageRequest.of(page, size);
+		Page<Receita> pagedResult = null;
+		
+		if (tag.equals("")) {
+			if (paramOrdem.equals("tempo")) {
+				if (ascending)
+					pagedResult = receitaRepository.filtrarReceitasSortedTempoASC(filtro, paging);
+				else
+					pagedResult = receitaRepository.filtrarReceitasSortedTempoDESC(filtro, paging);
+			} else {
+				if (ascending)
+					pagedResult = receitaRepository.filtrarReceitasSortedPorcaoASC(filtro, paging);
+				else
+					pagedResult = receitaRepository.filtrarReceitasSortedPorcaoDESC(filtro, paging);
+			}
+		} else {
+			String fixed = fixTag(tag);
+			
+			if (paramOrdem.equals("tempo")) {
+				if (ascending)
+					pagedResult = receitaRepository.filtrarReceitasSortedTempoASC(filtro, fixed, paging);
+				else
+					pagedResult = receitaRepository.filtrarReceitasSortedTempoDESC(filtro, fixed, paging);
+			} else {
+				if (ascending)
+					pagedResult = receitaRepository.filtrarReceitasSortedPorcaoASC(filtro, fixed, paging);
+				else
+					pagedResult = receitaRepository.filtrarReceitasSortedPorcaoDESC(filtro, fixed, paging);
+			}
+		}
+		
+		if (pagedResult.hasContent())
+			return pagedResult.getContent();
+		return new ArrayList<Receita>();
+	}
+	
+	
 	/**
 	 * Função auxiliar para transfomar a lista de ingredientes no formato de query
 	 * que o SQL espera receber
@@ -138,12 +269,61 @@ public class ReceitaService {
 	 * @return Uma lista com todas as receitas que correspondam à palavra chave
 	 *         inserida
 	 */
-	public List<Receita> getReceitaByNome(String nomeReceita, int page, int size) {
+	public List<Receita> getReceitaByNomeGenerico(String nomeReceita, int page, 
+			int size, String paramOrdem, 
+			boolean ascending, String tag) {
+		
 		Pageable paging = PageRequest.of(page, size);
-		Page<Receita> pagedResult = receitaRepository.getReceitaByNome(nomeReceita.replaceAll(" ", " <-> "), paging);
+		Page<Receita> pagedResult = null;
+		
+		nomeReceita = nomeReceita.replaceAll(" ", " <-> ");
+		
+		if (paramOrdem == "") {
+			if (tag.equals(""))
+				pagedResult = receitaRepository.getReceitaByNome(nomeReceita, paging);
+			else
+				pagedResult = receitaRepository.getReceitaByNome(nomeReceita, fixTag(tag), paging);
+		} else {
+			pagedResult = getReceitaByNomeSorted(nomeReceita, page, size, paramOrdem, ascending, tag);
+		}	
 		
 		if (pagedResult.hasContent())
 			return pagedResult.getContent();
 		return new ArrayList<Receita>();
+
+	}
+	private Page<Receita> getReceitaByNomeSorted(String nomeReceita, int page, int size, String paramOrdem, boolean ascending, String tag) {
+		Pageable paging = PageRequest.of(page, size);
+		Page<Receita> pagedResult = null;
+			
+		if (tag.equals("")) {
+			if (paramOrdem.equals("tempo")) {
+				if (ascending)
+					pagedResult = receitaRepository.getReceitaByNomeTempoASC(nomeReceita, paging); 
+				else 
+					pagedResult = receitaRepository.getReceitaByNomeTempoDESC(nomeReceita, paging);
+			} else { // porção
+				if (ascending)
+					pagedResult = receitaRepository.getReceitaByNomePorcaoASC(nomeReceita, paging); 
+				else 
+					pagedResult = receitaRepository.getReceitaByNomePorcaoDESC(nomeReceita, paging);
+			}
+		} else {
+			String fixed = fixTag(tag);
+			
+			if (paramOrdem.equals("tempo")) {
+				if (ascending)
+					pagedResult = receitaRepository.getReceitaByNomeTempoASC(nomeReceita, fixed, paging); 
+				else 
+					pagedResult = receitaRepository.getReceitaByNomeTempoDESC(nomeReceita, fixed, paging);
+			} else { // porção
+				if (ascending)
+					pagedResult = receitaRepository.getReceitaByNomePorcaoASC(nomeReceita, fixed, paging); 
+				else 
+					pagedResult = receitaRepository.getReceitaByNomePorcaoDESC(nomeReceita, fixed, paging);
+			}
+		}
+		
+		return pagedResult;
 	}
 }

@@ -35,8 +35,10 @@ public class ReceitaController {
 			@ApiResponse(responseCode = "200", description = "Retorna uma lista com um subconjunto de receitas de acordo com a página")
 	})
 	@GetMapping("/receitas")
-	public ResponseEntity<List<Receita>> getReceitas(@RequestParam(defaultValue="0") Integer page, @RequestParam(defaultValue="10") Integer size) {
-		return new ResponseEntity<List<Receita>>(receitaService.getReceitas(page, size), HttpStatus.OK);
+	public ResponseEntity<List<Receita>> getReceitas(@RequestParam(defaultValue="0") Integer page, 
+				@RequestParam(defaultValue="10") Integer size,
+				@RequestParam(defaultValue="") String tag) {
+		return new ResponseEntity<List<Receita>>(receitaService.getReceitas(page, size, tag), HttpStatus.OK);
 	}
 	
 	@ApiResponses(value = { 
@@ -52,6 +54,40 @@ public class ReceitaController {
 			@PathVariable Integer id) {
 		return new ResponseEntity<Receita>(receitaService.getReceitaById(id), HttpStatus.OK);
 	}
+	
+
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "Retorna as receitas paginadas ordenada pelo tempo em ordem crescente ou decrescente")
+	})
+	@GetMapping("/sort/tempo")
+	public ResponseEntity<List<Receita>> sortByTempo(@RequestParam(defaultValue="0") Integer page, 
+			@RequestParam(defaultValue="10") Integer size,
+			@RequestParam(defaultValue="") String tag,
+			@ApiParam(
+				    name =  "ascending",
+				    type = "boolean",
+		    		value= "variavel booleana que dita se a ordenação será crescente ou não",
+				    required = true)
+			@RequestParam(defaultValue = "true") boolean ascending)  {
+		return new ResponseEntity<List<Receita>>(receitaService.sortReceitasByTempo(page, size, ascending, tag), HttpStatus.OK);
+	}
+	
+	@ApiResponses(value = { 
+			@ApiResponse(responseCode = "200", description = "Retorna as receitas paginadas ordenada pela quantidade de porções em ordem crescente ou decrescente")
+	})
+	@GetMapping("/sort/porcao")
+	public ResponseEntity<List<Receita>> sortByPorcao(@RequestParam(defaultValue="0") Integer page, 
+			@RequestParam(defaultValue="10") Integer size,
+			@RequestParam(defaultValue="") String tag,
+			@ApiParam(
+				    name =  "ascending",
+				    type = "boolean",
+		    		value= "variavel booleana que dita se a ordenação será crescente ou não",
+				    required = true)
+		@RequestParam(defaultValue = "true") boolean ascending)  {
+		return new ResponseEntity<List<Receita>>(receitaService.sortReceitasByPorcao(page, size, ascending, tag), HttpStatus.OK);
+	}
+	
 
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Retorna uma lista de Receitas que contenham a palavra chave (ou algo similar) no título.")
@@ -65,10 +101,14 @@ public class ReceitaController {
 				    required = false)
 			@RequestParam(value = "nomeReceita", required = false) String nomeReceita,
 			@RequestParam(defaultValue="0") Integer page, 
-			@RequestParam(defaultValue="10") Integer size) {
-		return new ResponseEntity<List<Receita>>(receitaService.getReceitaByNome(nomeReceita, page, size), HttpStatus.OK);
+			@RequestParam(defaultValue="10") Integer size,
+			@RequestParam(defaultValue = "") String paramOrdem,
+			@RequestParam(defaultValue = "true") boolean ascending,
+			@RequestParam(defaultValue = "") String tag)
+	{ 
+		return new ResponseEntity<List<Receita>>(receitaService.getReceitaByNomeGenerico(nomeReceita, page, size, paramOrdem, ascending, tag), HttpStatus.OK);
 	}
-
+	
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Retorna uma lista de receitas que **obrigatoriamente** contém a lista de *ingredientes* e **não contém** a lista de *nao_ingredientes*.")
 	})
@@ -85,9 +125,13 @@ public class ReceitaController {
 				    type = "String",
 		    		value= "palavras chave que o usuário quer que *não* estejam presentes na receita.",
 				    required = false)
-			@RequestParam(value = "nao_ingredientes", required = false) String[] nao_ingredientes,
+			@RequestParam(value = "nao_ingredientes", required = false) String[] nao_ingredientes,			
 			@RequestParam(defaultValue="0") Integer page, 
-			@RequestParam(defaultValue="10") Integer size) {
-		return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitas(ingredientes, nao_ingredientes, page, size), HttpStatus.OK);
+			@RequestParam(defaultValue="10") Integer size,
+			@RequestParam(defaultValue = "") String paramOrdem,
+			@RequestParam(defaultValue = "true") boolean ascending,
+			@RequestParam(defaultValue = "") String tag)
+	{ 
+		return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitasGenerico(ingredientes, nao_ingredientes, page, size, paramOrdem, ascending, tag), HttpStatus.OK);
 	}
 }

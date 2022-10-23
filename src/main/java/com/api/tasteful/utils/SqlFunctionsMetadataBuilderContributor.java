@@ -17,6 +17,10 @@ public class SqlFunctionsMetadataBuilderContributor implements MetadataBuilderCo
 	                new SQLFunctionTemplate(BooleanType.INSTANCE,
 	                        "to_tsvector('Portuguese', unaccent((recipe_json -> 'nome_receita')::text)) @@ to_tsquery('Portuguese', unaccent(?1))"));
 	        
-	    }
+	    
+	        metadataBuilder.applySqlFunction("query_tag",
+	                new SQLFunctionTemplate(BooleanType.INSTANCE,
+	                        "to_tsvector('Portuguese', unaccent((recipe_json -> 'tags')::text)) @@ to_tsquery('Portuguese', unaccent(?1))"));
+	 }
 	}
 

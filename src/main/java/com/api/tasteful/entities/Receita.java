@@ -20,6 +20,10 @@ public class Receita {
 	private boolean has_image;
 	@Column(name="directory_name")
 	private String directory_name;
+	@Column(name="tempo")
+	private Integer tempo;
+	@Column(name="porcoes")
+	private Integer porcoes;
 	
 	public Integer getId() {
 		return id;
@@ -51,6 +55,22 @@ public class Receita {
 
 	public void setDirectory_name(String directory_name) {
 		this.directory_name = directory_name;
+	}
+	
+	public Integer getTempo() {
+		return tempo;
+	}
+	
+	public void setTempo(Integer tempo) {
+		this.tempo = tempo;
+	}
+	
+	public Integer getPorcoes() {
+		return porcoes;
+	}
+	
+	public void setPorcoes(Integer porcoes) {
+		this.porcoes = porcoes;
 	}
 	
 }
