@@ -33,20 +33,34 @@ public class ReceitaService {
 		return new ArrayList<Receita>();
 	}
 	
+	private String fixTag(String tag) {
+		String fixed = tag.replaceAll(" ", " <-> ");	
+		
+		return fixed;
+	}
+	
 	/**
 	 * 
 	 * @param page
 	 * @param size
 	 * @return
 	 */
-	public List<Receita> sortReceitasByTempo(int page, int size, boolean ascending) {
+	public List<Receita> sortReceitasByTempo(int page, int size, boolean ascending, String tag) {
 		Pageable paging = PageRequest.of(page, size);
 		Page<Receita> pagedResult = null;
 		
-		if (ascending)
-			pagedResult = receitaRepository.sortReceitasByTempoASC(paging);
-		else 
-			pagedResult = receitaRepository.sortReceitasByTempoDESC(paging); 
+		if (tag == "") {
+			if (ascending)
+				pagedResult = receitaRepository.sortReceitasByTempoASC(paging);
+			else 
+				pagedResult = receitaRepository.sortReceitasByTempoDESC(paging); 
+		} else {
+			String fixTag = fixTag(tag);
+			if (ascending)
+				pagedResult = receitaRepository.sortReceitasByTempoTagASC(fixTag, paging);
+			else 
+				pagedResult = receitaRepository.sortReceitasByTempoTagDESC(fixTag, paging); 
+		}
 		
 		if (pagedResult.hasContent())
 			return pagedResult.getContent();
@@ -59,14 +73,24 @@ public class ReceitaService {
 	 * @param size
 	 * @return
 	 */
-	public List<Receita> sortReceitasByPorcao(int page, int size, boolean ascending) {
+	public List<Receita> sortReceitasByPorcao(int page, int size, boolean ascending, String tag) {
 		Pageable paging = PageRequest.of(page, size);
 		Page<Receita> pagedResult = null;
 		
-		if (ascending)
-			pagedResult = receitaRepository.sortReceitasByPorcaoASC(paging);
-		else 
-			pagedResult = receitaRepository.sortReceitasByPorcaoDESC(paging); 
+		if (tag == "") {
+			if (ascending)
+				pagedResult = receitaRepository.sortReceitasByPorcaoASC(paging);
+			else 
+				pagedResult = receitaRepository.sortReceitasByPorcaoDESC(paging); 
+		} else {
+			String fixTag = fixTag(tag);
+			
+			if (ascending)
+				pagedResult = receitaRepository.sortReceitasByPorcaoTagASC(fixTag, paging);
+			else 
+				pagedResult = receitaRepository.sortReceitasByPorcaoTagDESC(fixTag, paging); 
+		}
+		
 		
 		if (pagedResult.hasContent())
 			return pagedResult.getContent();

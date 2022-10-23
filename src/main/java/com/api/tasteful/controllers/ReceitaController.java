@@ -60,13 +60,14 @@ public class ReceitaController {
 	@GetMapping("/sort/tempo")
 	public ResponseEntity<List<Receita>> sortByTempo(@RequestParam(defaultValue="0") Integer page, 
 			@RequestParam(defaultValue="10") Integer size,
+			@RequestParam(defaultValue="") String tag,
 			@ApiParam(
 				    name =  "ascending",
 				    type = "boolean",
 		    		value= "variavel booleana que dita se a ordenação será crescente ou não",
 				    required = true)
 			@RequestParam(value = "ascending") boolean ascending)  {
-		return new ResponseEntity<List<Receita>>(receitaService.sortReceitasByTempo(page, size, ascending), HttpStatus.OK);
+		return new ResponseEntity<List<Receita>>(receitaService.sortReceitasByTempo(page, size, ascending, tag), HttpStatus.OK);
 	}
 	
 	@ApiResponses(value = { 
@@ -75,13 +76,14 @@ public class ReceitaController {
 	@GetMapping("/sort/porcao")
 	public ResponseEntity<List<Receita>> sortByPorcao(@RequestParam(defaultValue="0") Integer page, 
 			@RequestParam(defaultValue="10") Integer size,
+			@RequestParam(defaultValue="") String tag,
 			@ApiParam(
 				    name =  "ascending",
 				    type = "boolean",
 		    		value= "variavel booleana que dita se a ordenação será crescente ou não",
 				    required = true)
 			@RequestParam(value = "ascending") boolean ascending)  {
-		return new ResponseEntity<List<Receita>>(receitaService.sortReceitasByPorcao(page, size, ascending), HttpStatus.OK);
+		return new ResponseEntity<List<Receita>>(receitaService.sortReceitasByPorcao(page, size, ascending, tag), HttpStatus.OK);
 	}
 	
 
@@ -103,28 +105,6 @@ public class ReceitaController {
 	{ 
 		return new ResponseEntity<List<Receita>>(receitaService.getReceitaByNomeGenerico(nomeReceita, page, size, paramOrdem, ascending), HttpStatus.OK);
 	}
-
-//	@ApiResponses(value = { 
-//			@ApiResponse(responseCode = "200", description = "Retorna uma lista de receitas que **obrigatoriamente** contém a lista de *ingredientes* e **não contém** a lista de *nao_ingredientes*.")
-//	})
-//	@GetMapping("/pesquisa/filtro")
-//	public ResponseEntity<List<Receita>> filtrarReceitas(
-//			@ApiParam(
-//				    name =  "ingredientes",
-//				    type = "String",
-//		    		value= "palavras chave que o usuário espera encontrar na lista de ingredientes da receita (embora esteja sendo buscado tanto no título quanto no corpo da receita também).",
-//				    required = false)
-//			@RequestParam(value = "ingredientes", required = false) String[] ingredientes,
-//			@ApiParam(
-//				    name =  "nao_ingredientes",
-//				    type = "String",
-//		    		value= "palavras chave que o usuário quer que *não* estejam presentes na receita.",
-//				    required = false)
-//			@RequestParam(value = "nao_ingredientes", required = false) String[] nao_ingredientes,
-//			@RequestParam(defaultValue="0") Integer page, 
-//			@RequestParam(defaultValue="10") Integer size) {
-//		return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitas(ingredientes, nao_ingredientes, page, size), HttpStatus.OK);
-//	}
 	
 	@ApiResponses(value = { 
 			@ApiResponse(responseCode = "200", description = "Retorna uma lista de receitas que **obrigatoriamente** contém a lista de *ingredientes* e **não contém** a lista de *nao_ingredientes*.")
