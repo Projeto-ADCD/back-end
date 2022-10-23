@@ -35,8 +35,10 @@ public class ReceitaController {
 			@ApiResponse(responseCode = "200", description = "Retorna uma lista com um subconjunto de receitas de acordo com a página")
 	})
 	@GetMapping("/receitas")
-	public ResponseEntity<List<Receita>> getReceitas(@RequestParam(defaultValue="0") Integer page, @RequestParam(defaultValue="10") Integer size) {
-		return new ResponseEntity<List<Receita>>(receitaService.getReceitas(page, size), HttpStatus.OK);
+	public ResponseEntity<List<Receita>> getReceitas(@RequestParam(defaultValue="0") Integer page, 
+				@RequestParam(defaultValue="10") Integer size,
+				@RequestParam(defaultValue="") String tag) {
+		return new ResponseEntity<List<Receita>>(receitaService.getReceitas(page, size, tag), HttpStatus.OK);
 	}
 	
 	@ApiResponses(value = { 
@@ -66,7 +68,7 @@ public class ReceitaController {
 				    type = "boolean",
 		    		value= "variavel booleana que dita se a ordenação será crescente ou não",
 				    required = true)
-			@RequestParam(value = "ascending") boolean ascending)  {
+			@RequestParam(defaultValue = "true") boolean ascending)  {
 		return new ResponseEntity<List<Receita>>(receitaService.sortReceitasByTempo(page, size, ascending, tag), HttpStatus.OK);
 	}
 	
@@ -82,7 +84,7 @@ public class ReceitaController {
 				    type = "boolean",
 		    		value= "variavel booleana que dita se a ordenação será crescente ou não",
 				    required = true)
-			@RequestParam(value = "ascending") boolean ascending)  {
+		@RequestParam(defaultValue = "true") boolean ascending)  {
 		return new ResponseEntity<List<Receita>>(receitaService.sortReceitasByPorcao(page, size, ascending, tag), HttpStatus.OK);
 	}
 	
@@ -101,9 +103,10 @@ public class ReceitaController {
 			@RequestParam(defaultValue="0") Integer page, 
 			@RequestParam(defaultValue="10") Integer size,
 			@RequestParam(defaultValue = "") String paramOrdem,
-			@RequestParam(defaultValue = "true") boolean ascending)
+			@RequestParam(defaultValue = "true") boolean ascending,
+			@RequestParam(defaultValue = "") String tag)
 	{ 
-		return new ResponseEntity<List<Receita>>(receitaService.getReceitaByNomeGenerico(nomeReceita, page, size, paramOrdem, ascending), HttpStatus.OK);
+		return new ResponseEntity<List<Receita>>(receitaService.getReceitaByNomeGenerico(nomeReceita, page, size, paramOrdem, ascending, tag), HttpStatus.OK);
 	}
 	
 	@ApiResponses(value = { 
@@ -126,8 +129,9 @@ public class ReceitaController {
 			@RequestParam(defaultValue="0") Integer page, 
 			@RequestParam(defaultValue="10") Integer size,
 			@RequestParam(defaultValue = "") String paramOrdem,
-			@RequestParam(defaultValue = "true") boolean ascending)
+			@RequestParam(defaultValue = "true") boolean ascending,
+			@RequestParam(defaultValue = "") String tag)
 	{ 
-		return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitasGenerico(ingredientes, nao_ingredientes, page, size, paramOrdem, ascending), HttpStatus.OK);
+		return new ResponseEntity<List<Receita>>(receitaService.filtrarReceitasGenerico(ingredientes, nao_ingredientes, page, size, paramOrdem, ascending, tag), HttpStatus.OK);
 	}
 }

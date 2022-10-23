@@ -19,61 +19,99 @@ public interface ReceitaRepository<T, ID extends Serializable> extends JpaReposi
 	@Query("SELECT r FROM Receita AS r WHERE id=?1")
 	Optional<Receita> getReceitaById(Integer id);
 	
+	// pega todas receitas de uma tag
+	@Query("SELECT r FROM Receita AS r WHERE query_tag(:tag) = true")
+	Page<Receita> findAll(@Param("tag") String tag, Pageable pageable);
+	
+	
+	////////////////////////////////
+	
 	// filtro comum de receitas
 	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true")
 	Page<Receita> filtrarReceitas(@Param("ingredientes") String ingredientes, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true AND query_tag(:tag) = true")
+	Page<Receita> filtrarReceitas(@Param("ingredientes") String ingredientes, @Param("tag") String tag, Pageable pageable);
 	
 	// filtrar receitas por tempo ##	
 	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true ORDER BY tempo ASC")
 	Page<Receita> filtrarReceitasSortedTempoASC(@Param("ingredientes") String ingredientes, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true AND query_tag(:tag) = true ORDER BY tempo ASC")
+	Page<Receita> filtrarReceitasSortedTempoASC(@Param("ingredientes") String ingredientes, @Param("tag") String tag, Pageable pageable);
+	
 	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true ORDER BY tempo DESC")
 	Page<Receita> filtrarReceitasSortedTempoDESC(@Param("ingredientes") String ingredientes, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true AND query_tag(:tag) = true ORDER BY tempo DESC")
+	Page<Receita> filtrarReceitasSortedTempoDESC(@Param("ingredientes") String ingredientes, @Param("tag") String tag, Pageable pageable);
 	
 	// filtrar receitas por porção
 	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true ORDER BY porcoes ASC")
 	Page<Receita> filtrarReceitasSortedPorcaoASC(@Param("ingredientes") String ingredientes, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true AND query_tag(:tag) = true ORDER BY porcoes ASC")
+	Page<Receita> filtrarReceitasSortedPorcaoASC(@Param("ingredientes") String ingredientes, @Param("tag") String tag, Pageable pageable);
+	
 	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true ORDER BY porcoes DESC")
 	Page<Receita> filtrarReceitasSortedPorcaoDESC(@Param("ingredientes") String ingredientes, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_recipe(:ingredientes) = true AND query_tag(:tag) = true ORDER BY porcoes DESC")
+	Page<Receita> filtrarReceitasSortedPorcaoDESC(@Param("ingredientes") String ingredientes, @Param("tag") String tag, Pageable pageable);
+	
+	////////////////////////////////
+	////////////////////////////////
 	
 	// filtrar receitas por chave do nome
 	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true")
 	Page<Receita> getReceitaByNome(@Param("nomeReceita") String nomeReceita, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true AND query_tag(:tag) = true")
+	Page<Receita> getReceitaByNome(@Param("nomeReceita") String nomeReceita, @Param("tag") String tag, Pageable pageable);
 	
 	// filtrar receitas por chave do nome e por tempo
 	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true ORDER BY tempo ASC")
 	Page<Receita> getReceitaByNomeTempoASC(@Param("nomeReceita") String nomeReceita, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true AND query_tag(:tag) = true ORDER BY tempo ASC")
+	Page<Receita> getReceitaByNomeTempoASC(@Param("nomeReceita") String nomeReceita, @Param("tag") String tag, Pageable pageable);
+	
 	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true ORDER BY tempo DESC")
 	Page<Receita> getReceitaByNomeTempoDESC(@Param("nomeReceita") String nomeReceita, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true AND query_tag(:tag) = true ORDER BY tempo DESC")
+	Page<Receita> getReceitaByNomeTempoDESC(@Param("nomeReceita") String nomeReceita, @Param("tag") String tag, Pageable pageable);
 
 	// filtrar receitas por chave do nome e por porcao
 	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true ORDER BY porcoes ASC")
 	Page<Receita> getReceitaByNomePorcaoASC(@Param("nomeReceita") String nomeReceita, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true AND query_tag(:tag) = true ORDER BY porcoes ASC")
+	Page<Receita> getReceitaByNomePorcaoASC(@Param("nomeReceita") String nomeReceita, @Param("tag") String tag, Pageable pageable);
+	
 	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true ORDER BY porcoes DESC")
 	Page<Receita> getReceitaByNomePorcaoDESC(@Param("nomeReceita") String nomeReceita, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_name(:nomeReceita) = true AND query_tag(:tag) = true ORDER BY porcoes DESC")
+	Page<Receita> getReceitaByNomePorcaoDESC(@Param("nomeReceita") String nomeReceita, @Param("tag") String tag, Pageable pageable);
+	
+	////////////////////////////////
+	////////////////////////////////
 	
 	
 	// ordenação de receitas por tempo
 	@Query("SELECT r FROM Receita AS r  WHERE tempo > 1 ORDER BY tempo ASC")
 	Page<Receita> sortReceitasByTempoASC(Pageable pageable);
+	@Query("SELECT r FROM Receita AS r  WHERE tempo > 1 AND query_tag(:tag) = true ORDER BY tempo ASC")
+	Page<Receita> sortReceitasByTempoASC(@Param("tag") String tag, Pageable pageable);
+	
 	@Query("SELECT r FROM Receita AS r ORDER BY tempo DESC")
 	Page<Receita> sortReceitasByTempoDESC(Pageable pageable);
-	
-	@Query("SELECT r FROM Receita AS r  WHERE tempo > 1 AND query_tag(:tag) = true ORDER BY tempo ASC")
-	Page<Receita> sortReceitasByTempoTagASC(@Param("tag") String tag, Pageable pageable);
 	@Query("SELECT r FROM Receita AS r ORDER BY tempo DESC")
-	Page<Receita> sortReceitasByTempoTagDESC(@Param("tag") String tag, Pageable pageable);
+	Page<Receita> sortReceitasByTempoDESC(@Param("tag") String tag, Pageable pageable);
 
+	////////////////////////////////
 	
 	// ordenação de receitas por porção
 	@Query("SELECT r FROM Receita AS r WHERE porcoes > 0 ORDER BY porcoes ASC")
 	Page<Receita> sortReceitasByPorcaoASC(Pageable pageable);
+	@Query("SELECT r FROM Receita AS r  WHERE porcoes > 0 AND query_tag(:tag) = true ORDER BY porcoes ASC")
+	Page<Receita> sortReceitasByPorcaoASC(@Param("tag") String tag, Pageable pageable);
+	
 	@Query("SELECT r FROM Receita AS r ORDER BY porcoes DESC")
 	Page<Receita> sortReceitasByPorcaoDESC(Pageable pageable);
-	
-	@Query("SELECT r FROM Receita AS r  WHERE porcoes > 0 AND query_tag(:tag) = true ORDER BY porcoes ASC")
-	Page<Receita> sortReceitasByPorcaoTagASC(@Param("tag") String tag, Pageable pageable);
-	@Query("SELECT r FROM Receita AS r ORDER BY porcoes DESC")
-	Page<Receita> sortReceitasByPorcaoTagDESC(@Param("tag") String tag, Pageable pageable);
+	@Query("SELECT r FROM Receita AS r WHERE query_tag(:tag) = true ORDER BY porcoes DESC")
+	Page<Receita> sortReceitasByPorcaoDESC(@Param("tag") String tag, Pageable pageable);
 }
 
 
